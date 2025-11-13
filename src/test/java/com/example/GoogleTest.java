@@ -32,9 +32,15 @@ public class GoogleTest {
         options.addArguments("--headless");
         options.addArguments("--start-maximized");
         options.addArguments("--disable-blink-features=AutomationControlled");
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--disable-blink-features=AutomationControlled");
 
         driver = new ChromeDriver(options);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(25));
     }
 
     @AfterEach
@@ -47,8 +53,9 @@ public class GoogleTest {
     @Test
     @Order(1)
     @DisplayName("Test Google homepage loads")
-    public void testGoogleHomepageLoads() {
+    public void testGoogleHomepageLoads() throws InterruptedException {
         driver.get("https://www.google.com");
+        Thread.sleep(3000); // Allow network + JS load before waiting
 
         String title = driver.getTitle();
         assertTrue(title.contains("Google"), "Page title should contain 'Google'");
@@ -242,6 +249,7 @@ public class GoogleTest {
             System.out.println("=".repeat(70));
 
             driver.get("https://www.amazon.in/");
+            Thread.sleep(3000); // Allow network + JS load before waiting
             wait.until(ExpectedConditions.presenceOfElementLocated(By.id("nav-logo-sprites")));
             System.out.println("✓ Amazon homepage loaded");
             Thread.sleep(2000);
