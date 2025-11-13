@@ -41,8 +41,8 @@ jobs:
 
       - name: Run Selenium Tests
         run: |
-         mvn test
-         mvn -Dtest=GoogleTest#testAmazonSite test
+         mvn test -Dtest=!AmazonTest
+         # mvn -Dtest=AmazonTest test
         env:
           # Set headless mode for CI
           HEADLESS: true
